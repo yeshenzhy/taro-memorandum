@@ -1,1 +1,6 @@
 $color-brand: #07c160;
+
+//暴露scss变量
+:export {
+  colorBrand: $color-brand;
+}

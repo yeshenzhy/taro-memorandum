@@ -13,13 +13,15 @@
     .btn {
       display: flex;
       align-items: center;
-      font-size: 30rpx;
+      font-size: 32rpx;
       &.delete {
-        margin-left: 340rpx;
         color: #f00;
       }
       &.save {
         color: $color-brand;
+      }
+      &.clear {
+        color: #FFC125;
       }
       .icon {
         display: block;
@@ -28,6 +30,21 @@
         margin-right: 5rpx;
       }
       color: #555555;
+    }
+  }
+  .main {
+    .input,.text-area{
+      padding: 0 32rpx;
+    }
+    .text-area {
+      margin-top: 24rpx;
+    }
+    .at-input {
+      margin-left: 0;
+    }
+    .btn-save {
+      margin-top: 40rpx;
+      padding: 0 32rpx;
     }
   }
 }

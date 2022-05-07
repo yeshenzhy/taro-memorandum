@@ -1,27 +1,22 @@
 
 import { observable, action } from "mobx";
 
-interface UserInfo{
-  name: string;
-  age: number;
+interface DataInfo{
+  type: string;
+  id?: string;
 }
 class CounterStore {
-  @observable counter:number = 0;
-  @observable userInfo:UserInfo = {
-    name: "tom",
-    age: 18
+  @observable dataInfo:DataInfo = {
+    type: ""
+  }
+  @observable isDoubleList:boolean = false
+  @action.bound
+  handleData(data: DataInfo) {
+    this.dataInfo = data;
   }
   @action.bound
-  increment() {
-    this.counter++;
-  }
-  @action.bound
-  decrement() {
-    this.counter--;
-  }
-  @action.bound
-  incrementAsync() {
-    setTimeout(() => this.counter++, 1500);
+  setListType(val:boolean) {
+    this.isDoubleList = val;
   }
 }
 export default new CounterStore();
