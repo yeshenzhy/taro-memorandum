@@ -2,9 +2,10 @@
 import { AtInput,AtTextarea,AtButton } from "taro-ui";
 import { View } from "@tarojs/components";
 import LabelTitle from "@/components/label";
-
+import store from "@/store/index";
+import { observer } from "mobx-react";
 // 主体内容
-const Main = (props) => {
+const Main = observer((props) => {
   const {titleValue,txt,setTxt, setTitleValue, saveData} = props;
   return (
     <View className="main">
@@ -12,7 +13,7 @@ const Main = (props) => {
       <View className="input">
         <AtInput
           name="value"
-          onChange={(value) => setTitleValue(value)}
+          onChange={(value:string) => setTitleValue(value.length >= 15 ? value.substr(0,15) : value)}
           placeholder="请输入标题"
           type="text"
           value={titleValue}
@@ -28,11 +29,11 @@ const Main = (props) => {
         />
       </View>
       <View className="btn-save">
-        <AtButton onClick={saveData} type="primary">保存</AtButton>
+        <AtButton onClick={saveData} type="primary">{store.dataInfo.type === "edit" ? "保存" : "新建"}</AtButton>
       </View>
 
     </View>
   );
-};
+});
 
 export default Main;

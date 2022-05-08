@@ -46,7 +46,12 @@ const PageAdd = () => {
     } catch (error) {
       list = [];
     }
-    if (!id) return null;
+    if (!id) {
+      return {
+        list,
+        item: null
+      };
+    };
     return {
       list,
       item: list.find(e => e.id === id) || null
@@ -56,11 +61,18 @@ const PageAdd = () => {
   const init = async () => {
     const { dataInfo: {type,id} } = store;
     if (type === "edit" && id) {
+      Taro.setNavigationBarTitle({
+        title: "备忘录-编辑"
+      });
       const itemData = await getCurrentItem(id);
       if(itemData && itemData.item) {
         setTitleValue(itemData.item.title);
         setTxt(itemData.item.content);
       }
+    } else {
+      Taro.setNavigationBarTitle({
+        title: "备忘录-新建"
+      });
     }
 
   };
@@ -73,6 +85,7 @@ const PageAdd = () => {
   });
   // 保存
   const saveData  = async () => {
+    const { dataInfo: {type,id} } = store;
     if (!titleValue.trim()) {
       setToastInfo({
         isOpened: true,
@@ -86,26 +99,37 @@ const PageAdd = () => {
         text: "请输入内容"
       });
     } else{
-      let list:Array<List> = [];
-      try {
-        list = await get("list") || [];
-      } catch (error) {
-        list = [];
+      const {list} = await getCurrentItem(id);
+      if (type === "edit" && id) {
+        // 编辑
+        const index = list.findIndex(e => e.id === id);
+        list[index].content = txt;
+        list[index].title = titleValue;
+        await setStorage("list", list);
+        // 保存
+        setToastInfo({
+          isOpened: true,
+          duration: 1000,
+          status: "success",
+          text: `保存成功${store.dataInfo.type ? "" : "，请继续填写"}`
+        });
+      } else {
+        // 新建
+        list.unshift({
+          title: titleValue,
+          content:txt,
+          date: toDate(new Date().getTime(), "yyyy-MM-dd hh:mm:ss").nowTime,
+          id: uuid()
+        });
+        await setStorage("list", list);
+        // 保存
+        setToastInfo({
+          isOpened: true,
+          duration: 1000,
+          status: "success",
+          text: `保存成功${store.dataInfo.type ? "" : "，请继续填写"}`
+        });
       }
-      list.unshift({
-        title: titleValue,
-        content:txt,
-        date: toDate(new Date().getTime(), "yyyy/MM/dd hh:mm:ss").nowTime,
-        id: uuid()
-      });
-      await setStorage("list", list);
-      // 保存
-      setToastInfo({
-        isOpened: true,
-        duration: 1000,
-        status: "success",
-        text: `保存成功${store.dataInfo.type ? "" : "，请继续填写"}`
-      });
     }
 
 
@@ -125,6 +149,13 @@ const PageAdd = () => {
         });
       },1000);
 
+    } else {
+      setTimeout(() => {
+        clearData();
+        store.handleData({
+          type: ""
+        });
+      },1000);
     }
   };
   // 删除

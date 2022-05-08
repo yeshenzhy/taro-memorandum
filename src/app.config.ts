@@ -30,7 +30,7 @@ export default defineAppConfig({
       },
       {
         pagePath: "pages/mine/mine",
-        text: "我的",
+        text: "关于",
         iconPath: "./assets/image/icon3.png",
         selectedIconPath: "./assets/image/icon3_select.png"
       }]
