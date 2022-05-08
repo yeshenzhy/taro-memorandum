@@ -35,29 +35,13 @@ const Empty = ({list}) => {
 };
 
 // 单列表模式
-const SingleList = () => {
-
-};
-const DoubleList = () => {
-
-};
-// 列表组件
-const List = ({list, deleteData}) => {
+const SingleList = ({list, deleteData, goEdit}) => {
   const handleClick = (option,index,e) => {
     e.stopPropagation();
     index === 1 && deleteData(option.className.id);
   };
-  const goEdit = (id:string) => {
-    Taro.switchTab({
-      url: "/pages/add/add"
-    });
-    store.handleData({
-      type: "edit",
-      id
-    });
-  };
   return (
-    <View className="list">
+    <>
       {
         list.map((item, index) => (
           <View key={index} className="list-item" onClick={() => goEdit(item.id)}>
@@ -98,9 +82,44 @@ const List = ({list, deleteData}) => {
 
         ))
       }
+    </>
+  );
+};
+const DoubleList = ({list, deleteData, goEdit}) => {
+  return (
+    <View className="list-item-box">
+      {
+        list.map((item, index) => (
+          <View key={index} className="list-item-double" onClick={() => goEdit(item.id)}
+            onLongPress={() => deleteData(item.id)}>
+            <View className="title">{item.title}</View>
+            <View className="text">{item.content}</View>
+            <View className="date">{item.date}</View>
+          </View>
+
+        ))
+      }
     </View>
   );
 };
+// 列表组件
+const List = observer(({list, deleteData}) => {
+  const {isDoubleList} = store;
+  const goEdit = (id:string) => {
+    Taro.switchTab({
+      url: "/pages/add/add"
+    });
+    store.handleData({
+      type: "edit",
+      id
+    });
+  };
+  return (
+    <View className="list">
+      {isDoubleList ? <DoubleList deleteData={deleteData} goEdit={goEdit} list={list}></DoubleList> : <SingleList deleteData={deleteData} goEdit={goEdit} list={list}></SingleList>}
+    </View>
+  );
+});
 const Header = observer(() => {
   const {isDoubleList} = store;
   const changeListType = () => {
@@ -139,6 +158,21 @@ const Home = observer(() => {
     duration: 1000
   });
   const [showModal, setShowModal] = useState<boolean>(false);
+  // const sortList = (arr, columns) => {
+  //   const cols = columns;
+  //   const out:any = [];
+  //   let col = 0;
+  //   while(col < cols) {
+  //       for(let i = 0; i < arr.length; i += cols) {
+  //           let _val = arr[i + col];
+  //           if (_val !== undefined)
+  //               out.push(_val);
+  //       }
+  //       col++;
+  //   }
+  //   return out;
+
+  // };
   useDidShow( async () => {
     store.handleData({
       type: ""

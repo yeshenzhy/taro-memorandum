@@ -9,7 +9,7 @@ class CounterStore {
   @observable dataInfo:DataInfo = {
     type: ""
   }
-  @observable isDoubleList:boolean = false
+  @observable isDoubleList:boolean = true
   @action.bound
   handleData(data: DataInfo) {
     this.dataInfo = data;

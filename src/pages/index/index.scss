@@ -64,11 +64,46 @@
       }
       .title {
         font-size: 32px;
+        word-break: break-all;
       }
       .date {
         font-size: 28px;
         color: #8e8e8e;
         margin-top: 10px;
+        word-break: break-all;
+      }
+    }
+    .list-item-box {
+      column-gap: 32px;
+      column-count: 2;
+      box-sizing: border-box;
+      padding: 32rpx;
+
+      .list-item-double {
+        break-inside: avoid;
+        box-shadow: 0 5px 15px 0 rgba(0,0,0,0.1);
+        border-radius: 10px;
+        margin-bottom: 32px;
+        padding: 15px;
+        box-sizing: border-box;
+        transform: translate3d(0, 0, 0);
+        font-size: 32px;
+        color: #000;
+        .title {
+          color: #000;
+          word-break: break-all;
+        }
+        .text {
+          font-size: 30px;
+          color: #333;
+          margin-top: 15px;
+          word-break: break-all;
+        }
+        .date {
+          font-size: 26px;
+          margin-top: 25px;
+          color: #8a8a8a;
+        }
       }
     }
   }
