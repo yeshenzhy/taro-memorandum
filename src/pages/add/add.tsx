@@ -31,7 +31,7 @@ const PageAdd = () => {
     id: string
   }
   const [titleValue, setTitleValue] = useState<string>("");
-  const [txt, setTxt] = useState<string>("");
+  const [txtValue, setTxtValue] = useState<string>("");
   const [{text,status,duration,isOpened }, setToastInfo] = useState<ToastInfo>({
     isOpened: false,
     duration: 1000
@@ -67,7 +67,7 @@ const PageAdd = () => {
       const itemData = await getCurrentItem(id);
       if(itemData && itemData.item) {
         setTitleValue(itemData.item.title);
-        setTxt(itemData.item.content);
+        setTxtValue(itemData.item.content);
       }
     } else {
       Taro.setNavigationBarTitle({
@@ -92,7 +92,7 @@ const PageAdd = () => {
         duration: 1000,
         text: "请输入标题"
       });
-    } else if (!txt.trim()) {
+    } else if (!txtValue.trim()) {
       setToastInfo({
         isOpened: true,
         duration: 1000,
@@ -103,7 +103,7 @@ const PageAdd = () => {
       if (type === "edit" && id) {
         // 编辑
         const index = list.findIndex(e => e.id === id);
-        list[index].content = txt;
+        list[index].content = txtValue;
         list[index].title = titleValue;
         await setStorage("list", list);
         // 保存
@@ -117,7 +117,7 @@ const PageAdd = () => {
         // 新建
         list.unshift({
           title: titleValue,
-          content:txt,
+          content:txtValue,
           date: toDate(new Date().getTime(), "yyyy-MM-dd hh:mm:ss").nowTime,
           id: uuid()
         });
@@ -188,7 +188,7 @@ const PageAdd = () => {
   // 清空
   const clearData = () => {
     setTitleValue("");
-    setTxt("");
+    setTxtValue("");
   };
   return (
     <View className="page-wrapper">
@@ -196,9 +196,9 @@ const PageAdd = () => {
       <Main
         saveData={useDebounceFn(saveData,{wait: 500}).run}
         setTitleValue={setTitleValue}
-        setTxt={setTxt}
+        setTxtValue={setTxtValue}
         titleValue={titleValue}
-        txt={txt}>
+        txtValue={txtValue}>
       </Main>
       <AtToast
         duration={duration}

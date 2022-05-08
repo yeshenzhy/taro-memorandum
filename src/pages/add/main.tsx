@@ -6,7 +6,7 @@ import store from "@/store/index";
 import { observer } from "mobx-react";
 // 主体内容
 const Main = observer((props) => {
-  const {titleValue,txt,setTxt, setTitleValue, saveData} = props;
+  const {titleValue,txtValue,setTxtValue, setTitleValue, saveData} = props;
   return (
     <View className="main">
       <LabelTitle title="标题"></LabelTitle>
@@ -23,9 +23,9 @@ const Main = observer((props) => {
       <View className="text-area">
         <AtTextarea
           maxLength={200}
-          onChange={(value) => setTxt(value)}
+          onChange={(value) => setTxtValue(value)}
           placeholder="你的内容是..."
-          value={txt}
+          value={txtValue}
         />
       </View>
       <View className="btn-save">
